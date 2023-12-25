@@ -1,63 +1,63 @@
-import "@/styles/globals.css";
-import { Metadata } from "next";
-import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
-import { Providers } from "./providers";
-import { Navbar } from "@/components/navbar";
-import { Link } from "@nextui-org/link";
-import clsx from "clsx";
+"use client";
+import "./globals.css";
+import "./data-tables-css.css";
+import "./satoshi.css";
+import { useState, useEffect } from "react";
+import Loader from "@/components/common/Loader";
 
-export const metadata: Metadata = {
-	title: {
-		default: siteConfig.name,
-		template: `%s - ${siteConfig.name}`,
-	},
-	description: siteConfig.description,
-	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "white" },
-		{ media: "(prefers-color-scheme: dark)", color: "black" },
-	],
-	icons: {
-		icon: "/favicon.ico",
-		shortcut: "/favicon-16x16.png",
-		apple: "/apple-touch-icon.png",
-	},
-};
+import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
 
 export default function RootLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<html lang="en" suppressHydrationWarning>
-			<head />
-			<body
-				className={clsx(
-					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable
-				)}
-			>
-				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-screen">
-						<Navbar />
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-							{children}
-						</main>
-						<footer className="w-full flex items-center justify-center py-3">
-							<Link
-								isExternal
-								className="flex items-center gap-1 text-current"
-								href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
-								title="nextui.org homepage"
-							>
-								<span className="text-default-600">Powered by</span>
-								<p className="text-primary">NextUI</p>
-							</Link>
-						</footer>
-					</div>
-				</Providers>
-			</body>
-		</html>
-	);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  return (
+    <html lang="en">
+      <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="flex h-screen overflow-hidden">
+              {/* <!-- ===== Sidebar Start ===== --> */}
+              <Sidebar
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+              {/* <!-- ===== Sidebar End ===== --> */}
+
+              {/* <!-- ===== Content Area Start ===== --> */}
+              <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                {/* <!-- ===== Header Start ===== --> */}
+                <Header
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                />
+                {/* <!-- ===== Header End ===== --> */}
+
+                {/* <!-- ===== Main Content Start ===== --> */}
+                <main>
+                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                    {children}
+                  </div>
+                </main>
+                {/* <!-- ===== Main Content End ===== --> */}
+              </div>
+              {/* <!-- ===== Content Area End ===== --> */}
+            </div>
+          )}
+        </div>
+      </body>
+    </html>
+  );
 }
