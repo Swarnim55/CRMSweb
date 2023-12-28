@@ -1,15 +1,26 @@
-import React from "react";
+"use client";
+import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Signin Page | Next.js E-commerce Dashboard Template",
-  description: "This is Signin page for TailAdmin Next.js",
-  // other metadata
-};
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
+import { getCsrfToken, signIn } from "next-auth/react";
 
 const SignIn: React.FC = () => {
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await signIn("credentials", {
+      email: emailRef.current,
+      password: passwordRef.current,
+      redirect: true,
+      callbackUrl: "http://localhost:3000",
+    });
+  };
   return (
     <>
       <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -169,7 +180,7 @@ const SignIn: React.FC = () => {
                 Sign In to CRMS
               </h2>
 
-              <form>
+              <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label
                     className="mb-2.5 block font-medium text-black dark:text-white"
@@ -179,9 +190,10 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
                       name="email"
                       id="email"
+                      type="email"
+                      onChange={(e) => (emailRef.current = e.target.value)}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
@@ -216,8 +228,9 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="password"
-                      name="password"
                       id="password"
+                      name="password"
+                      onChange={(e) => (passwordRef.current = e.target.value)}
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
