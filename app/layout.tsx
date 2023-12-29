@@ -4,6 +4,7 @@ import "./satoshi.css";
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@material-tailwind/react";
 import { Session } from "next-auth";
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -24,10 +25,12 @@ export default function RootLayout({ children, session }: ProvidersProps) {
           {loading ? (
             <Loader />
           ) : (
-            <div className="flex items-center justify-center h-screen">
+            <div>
               <main>
                 <SessionProvider session={session}>
-                  <div>{children}</div>
+                  <ThemeProvider>
+                    <div>{children}</div>
+                  </ThemeProvider>
                 </SessionProvider>
               </main>
             </div>

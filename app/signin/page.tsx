@@ -23,30 +23,23 @@ const SignIn: React.FC = () => {
   };
   return (
     <>
-      <div className="rounded-sm border border-stroke  shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="flex justify-center h-screen content-center rounded-sm  border-stroke  shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              {/* <Link className="mb-5.5 inline-block" href="/">
-                <Image
-                  className="hidden dark:block"
-                  src={"/images/logo/logo.png"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
+              <Link className="mb-5.5 inline-block" href="/">
                 <Image
                   className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
+                  src={"/images/logo/CRMS/logo-complete-1.png"}
                   alt="Logo"
                   width={176}
                   height={32}
                 />
-              </Link> */}
-              {/* 
-              <p className="2xl:px-20">
+              </Link>
+
+              <p>
                 Manage your commercial properties at ease of your fingertips.
-              </p> */}
+              </p>
 
               <span className="mt-15 inline-block">
                 <svg
